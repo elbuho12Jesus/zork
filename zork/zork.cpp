@@ -5,56 +5,43 @@
 #include <vector>
 #include <string>
 #include <conio.h>
+#include <cstddef>
+#include "helper.h"
+#include "word.h"
 
 using namespace std;
 
-void getVector(string &word, vector<string> &vector_player);
 
-int main()
-{
-	char enter;
-	string word;
+void readSentences(string &vector_player) {
+
+}
+int main() {
+	int initial = 1;
+	string sentence;
 	vector<string> vector_player;
 	vector_player.reserve(10);
+	Word word;
 	vector_player.push_back("look");
-	while (1) {
-		if(_kbhit()!=0) 
-		{
-			enter = _getch();
-			if (enter!='\r') 
-			{				
-				word += enter;
-				cout << enter;
-			}
-			else 
-			{
-				getVector(word, vector_player);
-			}
-		}
-		
-		if (vector_player.size()>0 && vector_player[0]=="quit") 
-		{
-			break;
-		}
-		if (vector_player.size()>0) 
-		{
-			vector_player.clear();
-			word = "";
-			cout << "--> ";
-		}
-	}
-	cout << vector_player[0] << endl;
-	
-	
-}
 
-void getVector(string &word,vector<string> &vector_player) {
-	const char *cpword = word.c_str();
-	do {
-		const char *begin = cpword;
-		while(*cpword!=' ' && *cpword) {
-			cpword++;
+	while (initial==1) {
+		
+		if (vector_player.size()>0) {
+			word.readWord(vector_player);		
+			vector_player.clear();
+		}		
+		
+		cout << "--> ";
+		getline(cin, sentence);
+		helper::getVector(sentence, vector_player);
+		if (helper::sameWord(vector_player[0] , "quit")) {
+			initial=0;
 		}
-		vector_player.push_back(string(cpword,*begin));
-	} while (0 != *cpword++);
+
+		
+
+	}
+	
+	cout << "\nThanks for playing, Bye!"<<endl;
+		
+	return 0;
 }
